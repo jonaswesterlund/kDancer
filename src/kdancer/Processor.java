@@ -2,7 +2,10 @@ package kdancer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 class Processor {
@@ -29,8 +32,18 @@ class Processor {
     }
 
     void printContextsToFile(ArrayList<String> contexts, String outputFile) throws IOException {
+        if(outputFile == null) {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+            LocalDateTime now = LocalDateTime.now();
+            outputFile = this.targetLemma + "_" + this.contextSize + "_" + this.lemmaType + "_" + dtf.format(now);
+        }
         FileWriter fileWriter = new FileWriter(outputFile);
         PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.printf("Lemma: %s%n", this.targetLemma);
+        printWriter.printf("Context size: %d%n", this.contextSize);
+        printWriter.printf("Lemma type: %s%n", this.lemmaType);
+        printWriter.printf("Occurrences: %d%n", contexts.size());
+        printWriter.println("");
         for(String context : contexts) {
             printWriter.println(context);
         }

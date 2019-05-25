@@ -9,7 +9,12 @@ public class KDancer {
         String targetLemma = args[1];
         int contextSize = Integer.parseInt(args[2]);
         String lemmaType = args[3];
-        String outputFile = args[4];
+        String outputFile;
+        if (args.length != 5) {
+            outputFile = null;
+        } else {
+            outputFile = args[4];
+        }
 
         Processor processor = new Processor(inputFile, targetLemma, contextSize, lemmaType);
         ArrayList<String> contexts = processor.indexAndCreateContexts();
