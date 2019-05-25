@@ -6,16 +6,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class ConcordanceBuilder {
-    private HashMap<String, ArrayList<String[]>> searchMap;
-    private ArrayList<String> problemLines;
+class Indexer {
 
-    ConcordanceBuilder() {
+    private ArrayList<String> problemLines;
+    private HashMap<String, ArrayList<String[]>> searchMap;
+
+    Indexer() {
         this.searchMap = new HashMap<>();
         this.problemLines = new ArrayList<>();
     }
 
-    void indexFile(InputStreamReader fileForIndexing, String targetLemma, boolean compoundWords) throws IOException {
+    HashMap<String, ArrayList<String[]>> indexFile(InputStreamReader fileForIndexing, String targetLemma, String lexemeType) throws IOException {
+        boolean compoundWords = lexemeTypeIsCompound(lexemeType);
         BufferedReader indexingReader = new BufferedReader(fileForIndexing);
         int i = 0;
         String line;
@@ -46,46 +48,24 @@ class ConcordanceBuilder {
             }
         }
         indexingReader.close();
+        return this.searchMap;
     }
 
-    void printConcordance(InputStreamReader fileForConcordance, String targetLemma, int contextSize) throws IOException {
-        BufferedReader printReader = new BufferedReader(fileForConcordance);
-        StringBuilder context = new StringBuilder();
-        int position = 0;
-        printReader.mark(1000);
-        for (String[] lexemePosition : this.searchMap.get(targetLemma)) {
-            printReader.reset();
-            String line = "";
-            while (position < Integer.parseInt(lexemePosition[1]) - contextSize) {
-                line = printReader.readLine();
-                position++;
-                printReader.mark(1000);
-            }
-            for (int j = 0; j < 2 * contextSize + 1; j++) {
-                String[] wordPair = line.split(" ");
-                String lexeme;
-                if (wordPair.length > 2) {
-                    lexeme = "<LEXEME INCLUDES SPACE>";
-                } else {
-                    lexeme = wordPair[0];
-                    if (lexeme.length() < 3) {
-                        lexeme = "<EMPTY WORD>";
-                    } else {
-                        lexeme = lexeme.substring(1, lexeme.length() - 1);
-                    }
-                }
-                context.append(lexeme).append(" ");
-                if ((line = printReader.readLine()) == null) {
-                    break;
-                }
-            }
-            context.append("|| Line ").append(Integer.parseInt(lexemePosition[1]));
-            System.out.println(context);
-            context = new StringBuilder();
+    private boolean lexemeTypeIsCompound(String lexemeType) {
+        switch (lexemeType) {
+            case "simple":
+                return false;
+            case "compound":
+                return true;
+            default:
+                return false;
         }
     }
 
     ArrayList<String> getProblemLines() {
         return this.problemLines;
+    }
+    HashMap<String, ArrayList<String[]>> getSearchMap() {
+        return this.searchMap;
     }
 }
