@@ -31,13 +31,13 @@ class Indexer {
                     problemLines.add(line + " | Line " + Integer.toString(i));
                 } else {
                     String currentLemma = wordPair[1];
-                    if(!compoundWords) {
+                    if (!compoundWords) {
                         if (!this.searchMap.keySet().contains(currentLemma)) {
                             this.searchMap.put(currentLemma, new ArrayList<>());
                         }
                         String[] lexemePosition = {lexeme, Integer.toString(i)};
                         this.searchMap.get(currentLemma).add(lexemePosition);
-                    } else if(!currentLemma.equals(targetLemma)){
+                    } else if (!currentLemma.equals(targetLemma)) {
                         if (!this.searchMap.keySet().contains(targetLemma)) {
                             this.searchMap.put(targetLemma, new ArrayList<>());
                         }
@@ -65,6 +65,7 @@ class Indexer {
     ArrayList<String> getProblemLines() {
         return this.problemLines;
     }
+
     HashMap<String, ArrayList<String[]>> getSearchMap() {
         return this.searchMap;
     }
