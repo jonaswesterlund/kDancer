@@ -16,8 +16,7 @@ class Indexer {
         this.problemLines = new ArrayList<>();
     }
 
-    HashMap<String, ArrayList<String[]>> indexFile(InputStreamReader fileForIndexing, String targetLemma, String lexemeType) throws IOException {
-        boolean compoundWords = lexemeTypeIsCompound(lexemeType);
+    HashMap<String, ArrayList<String[]>> indexFile(InputStreamReader fileForIndexing, String targetLemma, String lemmaType) throws IOException {
         BufferedReader indexingReader = new BufferedReader(fileForIndexing);
         int i = 0;
         String line;
@@ -31,7 +30,7 @@ class Indexer {
                     problemLines.add(line + " | Line " + Integer.toString(i));
                 } else {
                     String currentLemma = wordPair[1];
-                    if (!compoundWords) {
+                    if (!lexemeTypeIsCompound(lemmaType)) {
                         if (!this.searchMap.keySet().contains(currentLemma)) {
                             this.searchMap.put(currentLemma, new ArrayList<>());
                         }
@@ -51,8 +50,8 @@ class Indexer {
         return this.searchMap;
     }
 
-    private boolean lexemeTypeIsCompound(String lexemeType) {
-        switch (lexemeType) {
+    private boolean lexemeTypeIsCompound(String lemmaType) {
+        switch (lemmaType) {
             case "simple":
                 return false;
             case "compound":
