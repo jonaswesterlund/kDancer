@@ -1,9 +1,6 @@
 package kdancer;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +21,19 @@ class Processor {
         this.lemmaType = lexemeType;
     }
 
-    void indexAndPrintConcordance() throws IOException {
+    ArrayList<String> indexAndCreateContexts() throws IOException {
         Indexer indexer = new Indexer();
-        Concordance concordance = new Concordance();
+        ContextParser contextParser = new ContextParser();
         HashMap<String, ArrayList<String[]>> searchMap = indexer.indexFile(this.fileForIndexing, this.targetLemma, this.lemmaType);
-        concordance.printConcordance(this.fileForConcordance, searchMap, this.targetLemma, this.contextSize);
+        return contextParser.createContexts(this.fileForConcordance, searchMap, this.targetLemma, this.contextSize);
+    }
+
+    void printContextsToFile(ArrayList<String> contexts, String outputFile) throws IOException {
+        FileWriter fileWriter = new FileWriter(outputFile);
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        for(String context : contexts) {
+            printWriter.println(context);
+        }
+        printWriter.close();
     }
 }

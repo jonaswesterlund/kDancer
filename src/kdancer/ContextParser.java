@@ -6,14 +6,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class Concordance {
+class ContextParser {
 
-    void printConcordance(InputStreamReader fileForConcordance,
+    ArrayList<String> createContexts(InputStreamReader fileForConcordance,
                           HashMap<String, ArrayList<String[]>> searchMap,
                           String targetLemma,
                           int contextSize) throws IOException {
         BufferedReader printReader = new BufferedReader(fileForConcordance);
         StringBuilder context = new StringBuilder();
+        ArrayList<String> contexts = new ArrayList<>();
         int position = 0;
         printReader.mark(0);
         for (String[] lexemePosition : searchMap.get(targetLemma)) {
@@ -43,8 +44,9 @@ class Concordance {
                 }
             }
             context.append("|| Line ").append(Integer.parseInt(lexemePosition[1]));
-            System.out.println(context);
+            contexts.add(context.toString());
             context = new StringBuilder();
         }
+        return contexts;
     }
 }
