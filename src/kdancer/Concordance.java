@@ -15,15 +15,15 @@ class Concordance {
         BufferedReader printReader = new BufferedReader(fileForConcordance);
         StringBuilder context = new StringBuilder();
         int position = 0;
-        printReader.mark(1000);
+        printReader.mark(0);
         for (String[] lexemePosition : searchMap.get(targetLemma)) {
             printReader.reset();
             String line = "";
             while (position < Integer.parseInt(lexemePosition[1]) - contextSize) {
                 line = printReader.readLine();
                 position++;
-                printReader.mark(1000);
             }
+            printReader.mark(1000);
             for (int j = 0; j < 2 * contextSize + 1; j++) {
                 String[] wordPair = line.split(" ");
                 String lexeme;
