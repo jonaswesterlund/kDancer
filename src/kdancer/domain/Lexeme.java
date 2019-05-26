@@ -1,4 +1,4 @@
-package kdancer;
+package kdancer.domain;
 
 public class Lexeme {
 
@@ -6,7 +6,7 @@ public class Lexeme {
     private final String lemma;
     private final int position;
 
-    Lexeme(String lexeme, String lemma, int position) {
+    public Lexeme(String lexeme, String lemma, int position) {
         this.lexeme = lexeme;
         this.lemma = lemma;
         this.position = position;
@@ -16,11 +16,11 @@ public class Lexeme {
         return lexeme;
     }
 
-    String getLemma() {
+    public String getLemma() {
         return lemma;
     }
 
-    int getPosition() {
+    public int getPosition() {
         return position;
     }
 

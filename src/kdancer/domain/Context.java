@@ -1,4 +1,4 @@
-package kdancer;
+package kdancer.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ public class Context {
     private final Lexeme centralLexeme;
     private List<Lexeme> context;
 
-    Context(Lexeme centralLexeme) {
+    public Context(Lexeme centralLexeme) {
         this.centralLexeme = centralLexeme;
         this.context = new ArrayList<>();
     }
@@ -25,7 +25,7 @@ public class Context {
         this.context = context;
     }
 
-    void addToContext(Lexeme lexeme) {
+    public void addToContext(Lexeme lexeme) {
         context.add(lexeme);
     }
 

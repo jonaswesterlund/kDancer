@@ -1,5 +1,8 @@
 package kdancer;
 
+import kdancer.domain.Context;
+import kdancer.processing.Processor;
+
 import java.util.List;
 
 public class KDancer {

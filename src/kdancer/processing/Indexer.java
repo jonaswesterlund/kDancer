@@ -1,4 +1,6 @@
-package kdancer;
+package kdancer.processing;
+
+import kdancer.domain.Lexeme;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,7 @@
-package kdancer;
+package kdancer.processing;
+
+import kdancer.domain.Context;
+import kdancer.domain.Lexeme;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +13,9 @@ import java.util.Map;
 class ContextParser {
 
     List<Context> createContexts(InputStreamReader fileForConcordance,
-                          Map<String, List<Lexeme>> searchMap,
-                          String targetLemma,
-                          int contextSize) throws IOException {
+                                 Map<String, List<Lexeme>> searchMap,
+                                 String targetLemma,
+                                 int contextSize) throws IOException {
         BufferedReader printReader = new BufferedReader(fileForConcordance);
         List<Context> contexts = new ArrayList<>();
         int position = 0;
