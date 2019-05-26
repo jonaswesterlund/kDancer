@@ -4,48 +4,49 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class ContextParser {
 
-    ArrayList<String> createContexts(InputStreamReader fileForConcordance,
-                          HashMap<String, ArrayList<String[]>> searchMap,
+    List<Context> createContexts(InputStreamReader fileForConcordance,
+                          Map<String, List<Lexeme>> searchMap,
                           String targetLemma,
                           int contextSize) throws IOException {
         BufferedReader printReader = new BufferedReader(fileForConcordance);
-        StringBuilder context = new StringBuilder();
-        ArrayList<String> contexts = new ArrayList<>();
+        List<Context> contexts = new ArrayList<>();
         int position = 0;
         printReader.mark(0);
-        for (String[] lexemePosition : searchMap.get(targetLemma)) {
+        for (Lexeme lexeme : searchMap.get(targetLemma)) {
             printReader.reset();
+            Context context = new Context(lexeme);
             String line = "";
-            while (position < Integer.parseInt(lexemePosition[1]) - contextSize) {
+            while (position < lexeme.getPosition() - contextSize) {
                 line = printReader.readLine();
                 position++;
             }
             printReader.mark(1000);
             for (int j = 0; j < 2 * contextSize + 1; j++) {
                 String[] wordPair = line.split(" ");
-                String lexeme;
+                String lexemePart;
                 if (wordPair.length > 2) {
-                    lexeme = "<LEXEME INCLUDES SPACE>";
+                    Lexeme contextLexemeWithSpace = new Lexeme("<LEXEME INCLUDES SPACE>", targetLemma, position);
+                    context.addToContext(contextLexemeWithSpace);
                 } else {
-                    lexeme = wordPair[0];
-                    if (lexeme.length() < 3) {
-                        lexeme = "<EMPTY WORD>";
+                    lexemePart = wordPair[0];
+                    if (lexemePart.length() < 3) {
+                        lexemePart = "<EMPTY WORD>";
                     } else {
-                        lexeme = lexeme.substring(1, lexeme.length() - 1);
+                        lexemePart = lexemePart.substring(1, lexemePart.length() - 1);
                     }
+                    Lexeme contextLexeme = new Lexeme(lexemePart, targetLemma, position);
+                    context.addToContext(contextLexeme);
                 }
-                context.append(lexeme).append(" ");
                 if ((line = printReader.readLine()) == null) {
                     break;
                 }
             }
-            context.append("|| Line ").append(Integer.parseInt(lexemePosition[1]));
-            contexts.add(context.toString());
-            context = new StringBuilder();
+            contexts.add(context);
         }
         return contexts;
     }

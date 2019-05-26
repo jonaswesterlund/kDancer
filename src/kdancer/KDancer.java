@@ -1,6 +1,6 @@
 package kdancer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class KDancer {
 
@@ -17,7 +17,7 @@ public class KDancer {
         }
 
         Processor processor = new Processor(inputFile, targetLemma, contextSize, lemmaType);
-        ArrayList<String> contexts = processor.indexAndCreateContexts();
+        List<Context> contexts = processor.indexAndCreateContexts();
         processor.printContextsToFile(contexts, outputFile);
     }
 }
